@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 class cuan extends Authenticatable
 {
@@ -35,7 +35,8 @@ class cuan extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -47,4 +48,9 @@ class cuan extends Authenticatable
         'email_verified_at' => 'datetime',
         'skills' => 'array',
     ];
+
+    public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
 }

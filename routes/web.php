@@ -1,5 +1,9 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CuanController;
+use App\Http\Controllers\UASController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,12 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/home', 'MenuController@home');
-Route::get('/movie', 'MenuController@movie');
-Route::get('/dosen', 'MenuController@dosen');
-Route::get('/mahasiswa', 'MenuController@mahasiswa');
-Route::post('/skripsi', 'MenuController@skripsi');
-Route::get('/', 'MenuController@index');
-Route::post('/save', 'MenuController@savemovie');
-Route::get('/movie/form-ubah/(id)', 'MenuController@editMovie');
-Route::put('/update/(id)', 'MenuController@updatemovie');
+Route::get('/cuan', [CuanController::class, 'index'])->name('cuan.index');
+Route::get('/cuan/create', [CuanController::class, 'create'])->name('cuan.create');
+Route::post('/cuan', [CuanController::class, 'store'])->name('cuan.store');
+Route::get('/cuan/{id}/edit', [CuanController::class, 'edit'])->name('cuan.edit');
+Route::put('/cuan/{id}', [CuanController::class, 'update'])->name('cuan.update');
+Route::delete('/cuan/{id}', [CuanController::class, 'destroy'])->name('cuan.destroy');
+
+Route::middleware(['auth'])->group(function () {
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/password/edit', [CuanController::class, 'editPassword'])->name('password.edit');
+    Route::post('/password/update', [CuanController::class, 'updatePassword'])->name('password.update');
+});
+
+Route::get('/UAS', [UASController::class, 'UAS']);
+Route::post('/UASsubmit', [UASController::class, 'UAS_hasil']);
+Route::get('/UAS/index', [UASController::class, 'indexkaryawan']);
