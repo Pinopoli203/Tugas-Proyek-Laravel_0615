@@ -6,6 +6,13 @@
     <a href="{{ route('cuan.create') }}" class="btn btn-primary">+ Tambah Pengguna</a>
 </div>
 
+<form method="GET" action="{{ route('cuan.index') }}" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Cari nama, email, atau role...">
+        <button class="btn btn-primary" type="submit">Cari</button>
+    </div>
+</form>
+
 <table class="table table-striped">
     <thead class="table-dark">
         <tr>

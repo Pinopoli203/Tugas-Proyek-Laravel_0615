@@ -10,11 +10,21 @@ class CuanController extends Controller
 {
 
     // Tampilkan semua user
-    public function index()
+    public function index(Request $request)
     {
-        $cuan = cuan::all(); // Ambil semua data dari tabel cuan
-        return view('Cuan.index', compact('cuan')); // Kirim ke view
+        $search = $request->input('search');
+
+        $cuan = cuan::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('role', 'like', "%{$search}%");
+            })
+            ->paginate(10); // atau get() jika tidak ingin pagination
+
+        return view('cuan.index', compact('cuan'));
     }
+
 
     // Form tambah user
     public function create()
@@ -84,12 +94,13 @@ class CuanController extends Controller
     }
 
     public function editPassword()
-{
-    return view('cuan.edit-password');
-}
+    {
+        return view('cuan.edit-password');
+    }
 
     public function __construct()
     {
         $this->middleware('auth');
     }
+
 }
